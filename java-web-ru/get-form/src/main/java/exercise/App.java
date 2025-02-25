@@ -28,7 +28,11 @@ public final class App {
             var term = ctx.queryParam("term");
             List<User> users = new ArrayList<>();
             if (term != null) {
-                users = USERS.stream().filter(o -> o.getFirstName().contains(term)).toList();
+                term = term.toLowerCase();
+                String finalTerm = term;
+                users = USERS.stream().filter(o -> o.getFirstName().toLowerCase().contains(finalTerm)).toList();
+            } else {
+                users = USERS;
             }
             UsersPage usersPage = new UsersPage(users, term);
             ctx.render("users/index.jte", model("usersPage", usersPage));
