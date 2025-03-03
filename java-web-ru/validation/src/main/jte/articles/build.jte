@@ -21,7 +21,7 @@
             <div>
                 <label>
                     Текст
-                    <textarea name="descript">${page.getDescript()}</textarea>
+                    <textarea name="content">${page.getContent()}</textarea>
                 </label>
             </div>
             <div>

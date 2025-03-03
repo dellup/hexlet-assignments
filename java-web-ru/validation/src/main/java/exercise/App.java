@@ -1,7 +1,6 @@
 package exercise;
 
 import io.javalin.Javalin;
-import io.javalin.validation.ValidationException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +11,7 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 import io.javalin.rendering.template.JavalinJte;
 
 import exercise.repository.ArticleRepository;
+import io.javalin.validation.ValidationException;
 
 public final class App {
 
@@ -43,24 +43,24 @@ public final class App {
 
         app.post("/articles", ctx -> {
             var titleValue = ctx.formParam("title");
-            var descriptValue = ctx.formParam("descript");
+            var contentValue = ctx.formParam("content");
 
             try {
                 var title = ctx.formParamAsClass("title", String.class)
-                        .check(o -> o.length() >= 2, "Название статьи не должно быть короче 2 символов")
-                        .check(o -> !ArticleRepository.existsByTitle(o), "Название статьи должно быть уникальным")
+                        .check(o -> o.length() >= 2, "Название не должно быть короче двух символов")
+                        .check(o -> !ArticleRepository.existsByTitle(o), "Статья с таким названием уже существует")
                         .get();
 
-                var descript = ctx.formParamAsClass("descript", String.class)
+                var content = ctx.formParamAsClass("content", String.class)
                         .check(d -> d != null && !d.trim().isEmpty(), "Текст не должен быть пустым")
-                        .check(d -> d.length() >= 10, "Текст должен быть не короче 10 символов")
+                        .check(d -> d.length() >= 10, "Статья должна быть не короче 10 символов")
                         .get();
 
-                ArticleRepository.save(new Article(title, descript));
+                ArticleRepository.save(new Article(title, content));
                 ctx.redirect("/articles");
             } catch (ValidationException e) {
                 ctx.status(422);
-                var page = new BuildArticlePage(titleValue, descriptValue, e.getErrors());
+                var page = new BuildArticlePage(titleValue, contentValue, e.getErrors());
                 ctx.render("articles/build.jte", model("page", page));
             }
         });
