@@ -50,7 +50,7 @@ public class ProductsController {
     }
 
     public static void show(Context ctx) throws SQLException {
-        var id = ctx.pathParamAsClass("id", Long.class).get();
+        var id = ctx.queryParam("id", Long.class).get();
         var product = ProductsRepository.find(id)
             .orElseThrow(() -> new NotFoundResponse("Product not found"));
 
