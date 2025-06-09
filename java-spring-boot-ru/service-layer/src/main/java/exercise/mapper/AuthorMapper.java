@@ -5,7 +5,6 @@ import exercise.dto.AuthorDTO;
 import exercise.dto.AuthorUpdateDTO;
 import exercise.model.Author;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
